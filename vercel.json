@@ -1,6 +1,5 @@
 {
     "version": 2,
-    "regions": ["hkg1"],
-    "trailingSlash": true
+    "regions": ["hkg1"]
   }
   
