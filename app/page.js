@@ -14,14 +14,14 @@ export default function Home() {
         />
         <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2 tracking-[-.01em]">
-            Hi! This is Strat Management Website. Welcome!
+            Hi! This is Strata Management Website. Welcome!
             <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
               app/page.js
             </code>
             .
           </li>
           <li className="tracking-[-.01em]">
-            This is a website to support the management of the building. 
+            This is a website to support the management of the building.
           </li>
         </ol>
 
@@ -50,6 +50,21 @@ export default function Home() {
             Read our docs
           </a>
         </div>
+        <img src="/Building_pic.png" alt="The Building" width="400" />
+        <section className="mt-8 p-4 border border-gray-400 rounded-lg">
+          <h2 className="text-lg font-semibold mb-2">Committee Information</h2>
+          <p className="text-sm mb-2">
+          The act sets out the responsibilities of the Strata Committee, 
+          which are elected representatives of the owners, responsible for managing the body corporate.
+          </p>
+          <a
+            href="/Committee.pdf"
+            target="_blank"
+            className="text-blue-400 underline"
+          >
+            Committee Information (PDF)
+          </a>
+        </section>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
