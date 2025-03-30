@@ -1,7 +1,7 @@
 export const runtime = "edge";
 
 export async function GET() {
-  const Maintain = {
+  const Insurance = {
     Company: "999 Insurance Pty Ltd",
     Period: "1 Jan 2025 - 30 Dec 2025",
     Amount: "$2000",
