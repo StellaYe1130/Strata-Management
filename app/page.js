@@ -51,7 +51,7 @@ export default function Home() {
           </a>
         </div>
         <img src="/Building_pic.png" alt="The Building" width="400" />
-        <section className="mt-8 p-4 border border-gray-400 rounded-lg">
+        <section>
           <h2 className="text-lg font-semibold mb-2">Committee Information</h2>
           <p className="text-sm mb-2">
           The act sets out the responsibilities of the Strata Committee, 
