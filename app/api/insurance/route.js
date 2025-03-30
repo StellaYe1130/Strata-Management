@@ -2,11 +2,13 @@ export const runtime = "edge";
 
 export async function GET() {
   const Maintain = {
-    Company: "ABC Repair Pty Ltd",
-    Time: "24/7",
-    Number: "0411111111"
+    Company: "999 Insurance Pty Ltd",
+    Period: "1 Jan 2025 - 30 Dec 2025",
+    Amount: "$2000",
+    Deadline: "By 30 May 2025",
+    Contact: "999@insurance.com"
   };
-  return new Response(JSON.stringify(Maintain), {
+  return new Response(JSON.stringify(Insurance), {
     headers: { "Content-Type": "application/json" }
   });
 }
