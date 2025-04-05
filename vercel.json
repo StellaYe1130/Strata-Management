@@ -3,8 +3,8 @@
   "regions": ["hkg1"],
   "crons": [
     {
-      "path": "/api/reminder",
-      "schedule": "0 9 * * *"
+      "path": "/api/Alarm_Clock",
+      "schedule": "1 3 * * *"
     } 
   ] 
 }  
