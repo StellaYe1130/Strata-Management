@@ -1,5 +1,12 @@
 {
     "version": 2,
     "regions": ["hkg1"]
-  }
+    "crons" : [
+    {
+      "path": "/api/Alarm_Clock",
+      "schedule": "1 2 * * *"
+    }
+  ]
+}
+
   
