@@ -1,6 +1,7 @@
 export const config = {
     runtime: 'edge',
   };
+  
   export async function GET() {
     const reminderMessage = {
       date: new Date().toISOString(),
