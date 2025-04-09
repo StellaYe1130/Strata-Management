@@ -4,9 +4,8 @@
   "crons": [
     {
       "path": "/api/Alarm_Clock",
-      "schedule": "1 5 : 45"
-    } 
-  ] 
-}  
-
+      "schedule": "0 0 16 * * *"
+    }
+  ]
+}
 
