@@ -1,6 +1,6 @@
 export const config = {
     runtime: 'edge',
-    schedule: '0 6 1 * *'
+    schedule: '35 16 * * *'
   };
 
   export async function GET() {
