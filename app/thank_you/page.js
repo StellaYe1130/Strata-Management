@@ -1,8 +1,8 @@
 export default function ThankYouPage() {
     return (
-      <div className="p-4 text-center">
-        <h1 className="text-2xl font-bold text-green-600">Thank you!</h1>
-        <p>Your request has been received.</p>
+      <div style={{ padding: "2rem" }}>
+        <h1>Thank you for contacting us!</h1>
+        <p>We have received your message and will get back to you soon.</p>
       </div>
     );
   }
