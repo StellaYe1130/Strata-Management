@@ -1,16 +1,25 @@
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
 export const runtime = "edge";
 
 export async function GET() {
-  const BuildingIntro = {
-    building: "123 Apartment, Sydney",
-    committee: "Strata Management Department Committee",
-    manager: {
-      name: "Stella ye",
-      phone: "0412345678",
-      email: "Stella@123StrataManagement.com"
-    }
-  };
-  return new Response(JSON.stringify(BuildingIntro), {
-    headers: { "Content-Type": "application/json" }
+  const { data, error } = await supabase
+    .from("Building")
+    .select("*");
+
+  if (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  return new Response(JSON.stringify(data), {
+    headers: { "Content-Type": "application/json" },
   });
 }
