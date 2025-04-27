@@ -1,6 +1,10 @@
 {
   "version": 2,
-  "regions": ["hkg1"]
-
+  "regions": ["hkg1"],
+  "functions": {
+    "api/**/*.php": {
+      "runtime": "vercel-php@0.6.3"
+    }
+  }
 }
 
