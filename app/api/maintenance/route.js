@@ -10,8 +10,7 @@ export const runtime = "edge";
 export async function GET() {
   const { data, error } = await supabase
     .from("Maintenance")
-    .select("*")
-    .single();
+    .select("*");
 
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
