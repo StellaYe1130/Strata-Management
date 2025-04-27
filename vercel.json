@@ -1,10 +1,7 @@
 {
-  "version": 2,
-  "regions": ["hkg1"],
-  "routes": [
-    {
-      "src": "/api/Residents.php",
-      "dest": "https://residents-php.onrender.com/Residents.php"
+  "functions": {
+    "api/**/*.php": {
+      "runtime": "vercel-php@0.7.3"
     }
-  ]
+  }
 }
