@@ -9,7 +9,7 @@ export default function BuildingInfoPage() {
     async function fetchBuilding() {
       const res = await fetch("/api/building");
       const data = await res.json();
-      setBuilding(data);
+      setBuilding(data[0]);
     }
     fetchBuilding();
   }, []);
@@ -26,9 +26,9 @@ export default function BuildingInfoPage() {
         <p><strong>Committee:</strong> {building.committee}</p>
         <div className="mt-4">
           <h2 className="text-xl font-semibold">Manager Contact:</h2>
-          <p><strong>Name:</strong> {building.manager.name}</p>
-          <p><strong>Phone:</strong> {building.manager.phone}</p>
-          <p><strong>Email:</strong> {building.manager.email}</p>
+          <p><strong>Name:</strong> {building.manager_name}</p>
+          <p><strong>Phone:</strong> {building.manager_phone}</p>
+          <p><strong>Email:</strong> {building.manager_email}</p>
         </div>
       </div>
     </div>
