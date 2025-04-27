@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
-$residents = [
+$Residents = [
     [
         "name" => "Stella",
         "unit" => "807",
@@ -22,5 +22,5 @@ $residents = [
     ]
 ];
 
-echo json_encode($residents);
+echo json_encode($Residents);
 ?>
