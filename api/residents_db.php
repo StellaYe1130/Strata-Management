@@ -2,12 +2,12 @@
 $servername = "localhost";
 $username = "root";
 $password = "720608Sy"; 
-$database = "strata_management";
+$dbname = "strata_management";
 
-$conn = new mysqli($servername, $username, $password, $database);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
-    die("Connection fail: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 
 $sql = "SELECT * FROM residents";
