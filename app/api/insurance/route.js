@@ -1,14 +1,25 @@
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
 export const runtime = "edge";
 
 export async function GET() {
-  const Insurance = {
-    Company: "999 Insurance Pty Ltd",
-    Period: "1 Jan 2025 - 30 Dec 2025",
-    Amount: "$2000",
-    Deadline: "By 30 May 2025",
-    Contact: "999@insurance.com"
-  };
-  return new Response(JSON.stringify(Insurance), {
-    headers: { "Content-Type": "application/json" }
+  const { data, error } = await supabase
+    .from("Insurance")
+    .select("*");
+
+  if (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  return new Response(JSON.stringify(data), {
+    headers: { "Content-Type": "application/json" },
   });
 }
