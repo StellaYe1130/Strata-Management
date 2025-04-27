@@ -1,12 +1,16 @@
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
 export const runtime = "edge";
 
 export async function GET() {
-  const Maintain = {
-    Company: "ABC Repair Pty Ltd",
-    Time: "24/7",
-    Number: "0411111111"
-  };
-  return new Response(JSON.stringify(Maintain), {
-    headers: { "Content-Type": "application/json" }
-  });
-}
+  const { data, error } = await supabase
+    .from("Maintenance") 
+    .select("*")
+    .single(); 
+
+  if (error
