@@ -9,7 +9,7 @@ export default function InsuranceInfoPage() {
     async function fetchInsurance() {
       const res = await fetch("/api/insurance");
       const data = await res.json();
-      setInsurance(data);
+      setInsurance(data[0]); 
     }
     fetchInsurance();
   }, []);
@@ -22,11 +22,11 @@ export default function InsuranceInfoPage() {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Insurance Information</h1>
       <div className="border p-4 rounded-lg shadow">
-        <p><strong>Company:</strong> {insurance.Company}</p>
-        <p><strong>Period:</strong> {insurance.Period}</p>
-        <p><strong>Amount:</strong> {insurance.Amount}</p>
-        <p><strong>Deadline:</strong> {insurance.Deadline}</p>
-        <p><strong>Contact:</strong> {insurance.Contact}</p>
+        <p><strong>Company:</strong> {insurance.company}</p>
+        <p><strong>Period:</strong> {insurance.period}</p>
+        <p><strong>Amount:</strong> {insurance.amount}</p>
+        <p><strong>Deadline:</strong> {insurance.deadline}</p>
+        <p><strong>Contact:</strong> {insurance.contact}</p>
       </div>
     </div>
   );
