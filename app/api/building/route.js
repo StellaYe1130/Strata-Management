@@ -9,7 +9,7 @@ export const runtime = "edge";
 
 export async function GET() {
   const { data, error } = await supabase
-    .from("Building")
+    .from("building")
     .select("*");
 
   if (error) {
