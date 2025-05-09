@@ -13,7 +13,7 @@ export default function BuildingInfoPage() {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
         const data = await res.json();
-        console.log("Fetched data:", data);
+        console.log("building fetched:", data[0]);
         setBuilding(data[0]); 
       } catch (error) {
         console.error("Failed to fetch building data:", error);
