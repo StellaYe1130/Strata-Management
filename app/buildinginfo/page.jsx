@@ -7,12 +7,21 @@ export default function BuildingInfoPage() {
 
   useEffect(() => {
     async function fetchBuilding() {
-      const res = await fetch("/api/building");
-      const data = await res.json();
-      setBuilding(data[0]);
+      try {
+        const res = await fetch("/api/building", { cache: "no-store" }); 
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
+        console.log("Fetched data:", data);
+        setBuilding(data[0]); 
+      } catch (error) {
+        console.error("Failed to fetch building data:", error);
+      }
     }
+  
     fetchBuilding();
-  }, []);
+  }, []);  
 
   if (!building) {
     return <div>Loading building data...</div>;
