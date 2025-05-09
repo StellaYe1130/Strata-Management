@@ -6,22 +6,30 @@ export default function BuildingInfoPage() {
   const [building, setBuilding] = useState(null);
 
   useEffect(() => {
-    async function fetchBuilding() {
-      try {
-        const res = await fetch("/api/building", { cache: "no-store" }); 
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        const data = await res.json();
-        console.log("building fetched:", data[0]);
-        setBuilding(data[0]); 
-      } catch (error) {
-        console.error("Failed to fetch building data:", error);
+  async function fetchBuilding() {
+    try {
+      const res = await fetch("/api/building", { cache: "no-store" });
+      if (!res.ok) {
+        console.error("Fetch failed with status:", res.status);
+        return;
       }
+
+      const data = await res.json();
+      console.log("Fetched data from API:", data);
+
+      if (Array.isArray(data) && data.length > 0) {
+        setBuilding(data[0]);
+      } else {
+        console.error("Supabase returned empty data array.");
+      }
+    } catch (err) {
+      console.error("Error fetching building data:", err);
     }
-  
-    fetchBuilding();
-  }, []);  
+  }
+
+  fetchBuilding();
+}, []);
+
 
   if (!building) {
     return <div>Loading building data...</div>;
