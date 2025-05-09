@@ -13,11 +13,13 @@ export async function GET() {
     .select("*");
 
   if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
+  console.error("Supabase error:", error.message);
+  return new Response(JSON.stringify({ error: error.message }), {
+    status: 500,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
 
   return new Response(JSON.stringify(data), {
     headers: { "Content-Type": "application/json" },
