@@ -22,9 +22,9 @@ export default function MaintenanceInfoPage() {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Maintenance Information</h1>
       <div className="border p-4 rounded-lg shadow">
-        <p><strong>Company:</strong> {maintenance.company}</p>
-        <p><strong>Time:</strong> {maintenance.time}</p>
-        <p><strong>Number:</strong> {maintenance.number}</p>
+        <p><strong>Company:</strong> {maintenance.Company}</p>
+        <p><strong>Time:</strong> {maintenance.Time}</p>
+        <p><strong>Number:</strong> {maintenance.Number}</p>
       </div>
     </div>
   );
