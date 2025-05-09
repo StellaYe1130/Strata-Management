@@ -9,7 +9,7 @@ export default function MaintenanceInfoPage() {
     async function fetchMaintenance() {
       const res = await fetch("/api/maintenance");
       const data = await res.json();
-      setMaintenance(data);
+      setMaintenance(data[0]);
     }
     fetchMaintenance();
   }, []);
