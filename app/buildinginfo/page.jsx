@@ -1,5 +1,5 @@
 "use client";
-
+import supabase from '@/lib/supabaseClient'
 import { useEffect, useState } from "react";
 
 export default function BuildingInfoPage() {
@@ -28,6 +28,25 @@ export default function BuildingInfoPage() {
   }
 
   fetchBuilding();
+  const channel = supabase
+    .channel('building-changes')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'building',
+      },
+      (payload) => {
+        console.log('Change detected in building table:', payload)
+        fetchBuilding(); 
+      }
+    )
+    .subscribe()
+
+  return () => {
+    supabase.removeChannel(channel)
+  }
 }, []);
 
 
