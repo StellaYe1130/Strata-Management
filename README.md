@@ -4,6 +4,10 @@ A full-stack strata management portal for apartment residents and committee memb
 
 这是一个面向公寓住户和业主委员会的全栈分层物业管理平台。项目将楼宇信息、保险记录、维修联系方式、住户资料和维修请求集中到一个带登录权限控制的后台中。
 
+## Live Demo / 在线演示
+
+https://strata-management-final-lime.vercel.app
+
 ## Features / 功能
 
 - Supabase Auth sign in and sign up  
