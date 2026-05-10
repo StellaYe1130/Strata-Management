@@ -1,13 +1,11 @@
-import { supabase } from "@/lib/supabaseClient";
+import { jsonResponse } from "@/lib/supabaseServer";
 
 export async function GET() {
-  const { data, error } = await supabase
-    .from('Residents')
-    .select('*');
-
-  if (error) {
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
-  }
-
-  return new Response(JSON.stringify(data), { status: 200 });
+  return jsonResponse(
+    {
+      error:
+        "Residents are protected. Sign in and read the Residents table through Supabase Auth.",
+    },
+    401
+  );
 }

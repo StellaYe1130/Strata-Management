@@ -1,72 +1,115 @@
 "use client";
-import supabase from '@/lib/supabaseClient'
+
+import supabase from "@/lib/supabaseClient";
 import { useEffect, useState } from "react";
 
 export default function BuildingInfoPage() {
   const [building, setBuilding] = useState(null);
+  const [status, setStatus] = useState("loading");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-  async function fetchBuilding() {
-    try {
-      const res = await fetch("/api/building", { cache: "no-store" });
-      if (!res.ok) {
-        console.error("Fetch failed with status:", res.status);
-        return;
-      }
+    async function fetchBuilding() {
+      try {
+        const res = await fetch("/api/building", { cache: "no-store" });
+        const data = await res.json();
 
-      const data = await res.json();
-      console.log("Fetched data from API:", data);
+        if (!res.ok) {
+          throw new Error(data.error || "Failed to load building data.");
+        }
 
-      if (Array.isArray(data) && data.length > 0) {
-        setBuilding(data[0]);
-      } else {
-        console.error("Supabase returned empty data array.");
+        if (Array.isArray(data) && data.length > 0) {
+          setBuilding(data[0]);
+          setStatus("success");
+        } else {
+          setBuilding(null);
+          setStatus("empty");
+        }
+      } catch (error) {
+        setErrorMessage(error.message);
+        setStatus("error");
       }
-    } catch (err) {
-      console.error("Error fetching building data:", err);
     }
+
+    fetchBuilding();
+    if (!supabase) {
+      return undefined;
+    }
+
+    const channel = supabase
+      .channel("building-changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "building",
+        },
+        () => {
+          fetchBuilding();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  if (status === "loading") {
+    return <main className="mx-auto max-w-6xl px-6 py-10">Loading building data...</main>;
   }
 
-  fetchBuilding();
-  const channel = supabase
-    .channel('building-changes')
-    .on(
-      'postgres_changes',
-      {
-        event: '*',
-        schema: 'public',
-        table: 'building',
-      },
-      (payload) => {
-        console.log('Change detected in building table:', payload)
-        fetchBuilding(); 
-      }
-    )
-    .subscribe()
-
-  return () => {
-    supabase.removeChannel(channel)
+  if (status === "error") {
+    return <main className="mx-auto max-w-6xl px-6 py-10 text-red-600">{errorMessage}</main>;
   }
-}, []);
 
-
-  if (!building) {
-    return <div>Loading building data...</div>;
+  if (status === "empty" || !building) {
+    return <main className="mx-auto max-w-6xl px-6 py-10">No building information found.</main>;
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Building Information</h1>
-      <div className="border p-4 rounded-lg shadow">
-        <p><strong>Building:</strong> {building.building}</p>
-        <p><strong>Committee:</strong> {building.committee}</p>
-        <div className="mt-4">
-          <h2 className="text-xl font-semibold">Manager Contact:</h2>
-          <p><strong>Name:</strong> {building.manager_name}</p>
-          <p><strong>Phone:</strong> {building.manager_phone}</p>
-          <p><strong>Email:</strong> {building.manager_email}</p>
-        </div>
+    <main className="mx-auto max-w-6xl px-6 py-10">
+      <p className="text-sm font-bold uppercase tracking-wide text-blue-700">
+        Building register
+      </p>
+      <h1 className="mt-2 text-3xl font-bold text-slate-950">
+        Building Information
+      </h1>
+
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-bold text-slate-950">Property</h2>
+          <dl className="mt-4 space-y-3 text-sm">
+            <div>
+              <dt className="font-semibold text-slate-500">Building</dt>
+              <dd className="mt-1 text-slate-950">{building.building}</dd>
+            </div>
+            <div>
+              <dt className="font-semibold text-slate-500">Committee</dt>
+              <dd className="mt-1 text-slate-950">{building.committee}</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-bold text-slate-950">Manager Contact</h2>
+          <dl className="mt-4 space-y-3 text-sm">
+            <div>
+              <dt className="font-semibold text-slate-500">Name</dt>
+              <dd className="mt-1 text-slate-950">{building.manager_name}</dd>
+            </div>
+            <div>
+              <dt className="font-semibold text-slate-500">Phone</dt>
+              <dd className="mt-1 text-slate-950">{building.manager_phone}</dd>
+            </div>
+            <div>
+              <dt className="font-semibold text-slate-500">Email</dt>
+              <dd className="mt-1 text-slate-950">{building.manager_email}</dd>
+            </div>
+          </dl>
+        </section>
       </div>
-    </div>
+    </main>
   );
 }

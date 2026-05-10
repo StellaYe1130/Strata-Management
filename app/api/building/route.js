@@ -1,27 +1,21 @@
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
-
-export const runtime = "edge";
+import {
+  createSupabaseServerClient,
+  jsonResponse,
+} from "@/lib/supabaseServer";
 
 export async function GET() {
-  const { data, error } = await supabase
-    .from("building")
-    .select("*");
+  const { client: supabase, error: configError } =
+    createSupabaseServerClient();
+
+  if (configError) {
+    return jsonResponse({ error: configError }, 500);
+  }
+
+  const { data, error } = await supabase.from("building").select("*");
 
   if (error) {
-  console.error("Supabase error:", error.message);
-  return new Response(JSON.stringify({ error: error.message }), {
-    status: 500,
-    headers: { "Content-Type": "application/json" },
-  });
-}
+    return jsonResponse({ error: error.message }, 500);
+  }
 
-
-  return new Response(JSON.stringify(data), {
-    headers: { "Content-Type": "application/json" },
-  });
+  return jsonResponse(data);
 }

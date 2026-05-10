@@ -1,146 +1,157 @@
 "use client";
+
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import supabase from "@/lib/supabaseClient";
+
+const quickActions = [
+  {
+    href: "/buildinginfo",
+    title: "Building details",
+    description: "Committee and manager contact information.",
+  },
+  {
+    href: "/insuranceinfo",
+    title: "Insurance register",
+    description: "Policy period, cover amount, deadline, and contact.",
+  },
+  {
+    href: "/maintenanceinfo",
+    title: "Maintenance support",
+    description: "Current provider details for resident requests.",
+  },
+];
 
 export default function Home() {
-  const [username, setUsername] = useState("");
+  const [sessionEmail, setSessionEmail] = useState("");
+
   useEffect(() => {
-    const cookies = document.cookie.split("; ");
-    const userCookie = cookies.find(row => row.startsWith("username="));
-    if (userCookie) {
-      setUsername(userCookie.split("=")[1]);
+    if (!supabase) {
+      return;
     }
+
+    async function loadSession() {
+      const { data } = await supabase.auth.getSession();
+      setSessionEmail(data.session?.user?.email || "");
+    }
+
+    loadSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSessionEmail(session?.user?.email || "");
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const handleLogout = () => {
-    document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    setUsername(""); 
-  };
+  async function handleLogout() {
+    if (!supabase) {
+      return;
+    }
+
+    await supabase.auth.signOut();
+    setSessionEmail("");
+  }
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-      {username && (
-      <>
-        <h1 className="text-2xl font-bold mb-4">Welcome back, {username}!</h1>
-        <button 
-          onClick={handleLogout}
-          className="bg-red-500 text-white px-4 py-2 rounded mb-6"
-        >
-          Logout
-        </button>
-        </>
-      )}
+    <main className="bg-slate-50">
+      <section className="mx-auto grid max-w-6xl gap-10 px-6 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+        <div>
+          {sessionEmail ? (
+            <div className="mb-6 flex flex-wrap items-center gap-3 rounded border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm">
+              <p className="font-semibold text-slate-800">
+                Signed in as {sessionEmail}.
+              </p>
+              <button
+                onClick={handleLogout}
+                className="rounded border border-slate-300 px-3 py-1.5 font-semibold text-slate-700 hover:bg-slate-100"
+              >
+                Logout
+              </button>
+            </div>
+          ) : null}
+
+          <p className="mb-3 text-sm font-bold uppercase tracking-wide text-blue-700">
+            Resident and committee portal
+          </p>
+          <h1 className="max-w-3xl text-4xl font-bold leading-tight text-slate-950 sm:text-5xl">
+            Practical strata information for 123 Apartment
+          </h1>
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-700">
+            View current building records, insurance details, maintenance contacts,
+            resident information, and committee resources from one calm, simple place.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/buildinginfo"
+              className="rounded bg-slate-950 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+            >
+              View Building Info
+            </Link>
+            <Link
+              href="/contact"
+              className="rounded border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-100"
+            >
+              Submit Request
+            </Link>
+          </div>
+        </div>
 
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
+          src="/Building_pic.png"
+          alt="123 Apartment building"
+          width={720}
+          height={520}
           priority
+          className="h-auto w-full rounded-lg border border-slate-200 object-cover shadow-sm"
         />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Hi! This is Strata Management Website. Welcome!
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            This is a website to support the management of the building.
-          </li>
-        </ol>
+      </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <section className="mx-auto max-w-6xl px-6 pb-12">
+        <div className="grid gap-4 md:grid-cols-3">
+          {quickActions.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm hover:border-slate-300 hover:shadow"
+            >
+              <h2 className="text-lg font-bold text-slate-950">{item.title}</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{item.description}</p>
+            </Link>
+          ))}
         </div>
-        <img src="/Building_pic.png" alt="The Building" width="400" />
-        <section>
-          <h2 className="text-lg font-semibold mb-2">Committee Information</h2>
-          <p className="text-sm mb-2">
-          The act sets out the responsibilities of the Strata Committee, 
-          which are elected representatives of the owners, responsible for managing the body corporate.
-          </p>
-          <a
-            href="/Committee.pdf"
-            target="_blank"
-            className="text-blue-400 underline"
-          >
-            Committee Information (PDF)
-          </a>
-        </section>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+
+      <section className="border-y border-slate-200 bg-white">
+        <div className="mx-auto grid max-w-6xl gap-8 px-6 py-10 md:grid-cols-[0.75fr_1.25fr]">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-wide text-blue-700">
+              Committee resource
+            </p>
+            <h2 className="mt-2 text-2xl font-bold text-slate-950">
+              Governance information
+            </h2>
+          </div>
+          <div>
+            <p className="leading-7 text-slate-700">
+              The strata committee represents owners and supports day-to-day
+              decisions for the building. Committee information is available as a
+              PDF for residents and stakeholders.
+            </p>
+            <Link
+              href="/Committee.pdf"
+              target="_blank"
+              className="mt-4 inline-flex text-sm font-bold text-blue-700 underline"
+            >
+              Open Committee Information PDF
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
