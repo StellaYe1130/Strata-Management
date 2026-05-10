@@ -1,53 +1,130 @@
-# Strata Management Portal / 分层物业管理平台
+# Strata Management Portal
 
-A full-stack strata management portal for apartment residents and committee members. The app centralizes building information, insurance records, maintenance contacts, resident records, and maintenance requests in one authenticated dashboard.
+Live demo: https://strata-management-final-lime.vercel.app
 
-这是一个面向公寓住户和业主委员会的全栈分层物业管理平台。项目将楼宇信息、保险记录、维修联系方式、住户资料和维修请求集中到一个带登录权限控制的后台中。
+GitHub: https://github.com/StellaYe1130/Strata-Management
 
-## Live Demo / 在线演示
+A full-stack strata management web application for apartment residents and strata committee members. The project provides a resident-facing information portal and a protected management dashboard for handling resident records, building information, insurance details, maintenance contacts, and maintenance requests.
 
-https://strata-management-final-lime.vercel.app
+This project was built as a practical property-management system rather than a static website. It includes authentication, Row Level Security, CRUD workflows, database-backed contact requests, Vercel deployment, and a legacy Dockerized PHP microservice that demonstrates an earlier microservice-based architecture.
 
-## Features / 功能
+这是一个面向公寓住户和业主委员会的全栈物业管理平台。项目不仅是展示型网页，也包含登录认证、权限控制、后台 CRUD、数据库表单提交、Vercel 部署，以及一个用于展示 Docker/PHP 微服务经验的 legacy service。
 
-- Supabase Auth sign in and sign up  
-  Supabase Auth 登录与注册
-- Protected resident records page  
-  受保护的住户资料页面
-- Admin allowlist using Supabase Row Level Security  
-  基于 Supabase RLS 的管理员白名单
-- Admin CRUD dashboard for residents, insurance, maintenance, and contact requests  
-  后台 CRUD 管理住户、保险、维修和联系请求
-- Public contact request form with Supabase storage  
-  公开维修请求表单，并写入 Supabase 数据库
-- Building, insurance, maintenance, and committee information pages  
-  楼宇、保险、维修和委员会信息页面
-- Vercel configuration with a scheduled reminder endpoint  
-  Vercel 配置和定时提醒 API
+## Screenshots
 
-## Tech Stack / 技术栈
+### Home Page
 
-- Next.js App Router
-- React
-- Supabase Auth and Database
-- Supabase Row Level Security
-- Vercel
-- Legacy PHP microservice with Docker
-- CSS utility layer in `app/globals.css`
+![Home Page](docs/screenshots/homepage1.png)
 
-## Getting Started / 本地运行
+### Portal Sections
+
+![Portal Sections](docs/screenshots/homepage2.png)
+
+## Core Features
+
+- Resident and committee information portal
+- Supabase Auth sign in and sign up
+- Protected resident records page
+- Admin allowlist controlled by Supabase Row Level Security
+- Admin CRUD dashboard for residents, insurance, maintenance, and contact requests
+- Public maintenance request form stored in Supabase
+- Building, insurance, maintenance, and committee information pages
+- Vercel deployment with environment-based configuration
+- Scheduled reminder endpoint configured through `vercel.json`
+- Legacy PHP residents API containerized with Docker
+
+## 中文功能概览
+
+- 面向住户和业主委员会的信息门户
+- Supabase Auth 登录与注册
+- 受保护的住户资料页面
+- 基于 Supabase RLS 的管理员白名单
+- 后台 CRUD 管理住户、保险、维修和联系请求
+- 公开维修请求表单，并写入 Supabase 数据库
+- 楼宇、保险、维修和委员会信息页面
+- 使用 Vercel 部署
+- 通过 `vercel.json` 配置定时提醒 API
+- 保留 Dockerized PHP 住户数据微服务作为架构演进展示
+
+## Tech Stack
+
+- **Frontend:** Next.js App Router, React
+- **Backend:** Next.js Route Handlers, Supabase Database
+- **Auth:** Supabase Auth
+- **Security:** Supabase Row Level Security
+- **Deployment:** Vercel
+- **Legacy Service:** PHP microservice with Docker
+- **Styling:** Custom CSS utility layer in `app/globals.css`
+
+## Architecture
+
+Current production architecture:
+
+```text
+Browser
+  -> Next.js App Router
+  -> Next.js API Routes
+  -> Supabase Auth
+  -> Supabase Database with RLS
+  -> Vercel Hosting
+```
+
+Legacy microservice architecture:
+
+```text
+Next.js app
+  -> Dockerized PHP residents API
+  -> JSON resident data
+```
+
+The PHP service is kept under `legacy/php-residents-service/` to demonstrate Docker and microservice experience. The current live application uses Supabase as the main data layer.
+
+当前线上版本使用 Supabase 作为主要数据层。PHP 服务保留在 `legacy/php-residents-service/` 中，用于展示项目早期的微服务方案和 Docker 容器化经验。
+
+## Project Structure
+
+```text
+app/
+  admin/                    Protected admin CRUD dashboard
+  api/                      Next.js API routes
+  components/               Shared header and footer
+  contact/                  Maintenance request form
+  login/                    Supabase Auth page
+  residents/                Protected resident records
+lib/
+  supabaseClient.js         Browser Supabase client
+  supabaseServer.js         Server-side Supabase helper
+legacy/
+  php-residents-service/    Dockerized PHP residents microservice
+docs/
+  screenshots/              Project screenshots
+supabase-schema.sql         Supabase tables and RLS policies
+vercel.json                 Vercel deployment and cron config
+```
+
+## Main Routes
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Home page |
+| `/aboutus` | Portal overview |
+| `/buildinginfo` | Building and manager information |
+| `/insuranceinfo` | Insurance information |
+| `/maintenanceinfo` | Maintenance provider information |
+| `/residents` | Protected resident records |
+| `/contact` | Public maintenance request form |
+| `/login` | Supabase login and sign up |
+| `/admin` | Protected admin dashboard |
+
+## Local Setup
 
 Install dependencies:
-
-安装依赖：
 
 ```bash
 npm install
 ```
 
 Create `.env.local`:
-
-创建 `.env.local`：
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
@@ -57,33 +134,25 @@ Website_Name=Strata Management
 
 Run the local development server:
 
-启动本地开发服务器：
-
 ```bash
 npm run dev
 ```
 
 Open:
 
-打开：
-
 ```text
 http://127.0.0.1:3001
 ```
 
-## Supabase Setup / Supabase 配置
+## Supabase Setup
 
-Create a new Supabase project, then run the SQL in:
-
-创建一个新的 Supabase 项目，然后运行以下文件中的 SQL：
+Create a Supabase project and run the SQL in:
 
 ```text
 supabase-schema.sql
 ```
 
-The schema creates the required tables:
-
-该 SQL 会创建以下数据表：
+The schema creates:
 
 - `Residents`
 - `Insurance`
@@ -94,29 +163,36 @@ The schema creates the required tables:
 
 It also enables Row Level Security and creates policies for public reads, authenticated resident access, contact request submissions, and admin-only management.
 
-它还会开启 Row Level Security，并创建公开读取、登录用户访问、联系请求提交和管理员管理所需的安全策略。
+## Admin Access
 
-## Legacy PHP Microservice / 旧版 PHP 微服务
+After creating a Supabase Auth account, copy your user id from:
 
-This repository also keeps a legacy Dockerized PHP residents API in:
+```text
+Authentication -> Users
+```
 
-本仓库保留了一个旧版 Dockerized PHP 住户数据 API：
+Then add yourself to the admin allowlist:
+
+```sql
+insert into public.admin_users (user_id)
+values ('YOUR_AUTH_USER_ID');
+```
+
+After that, open:
+
+```text
+/admin
+```
+
+## Legacy PHP Docker Service
+
+The project includes a legacy PHP residents API:
 
 ```text
 legacy/php-residents-service/
 ```
 
-It demonstrates the earlier microservice approach used before the project migrated to Supabase:
-
-它展示了项目迁移到 Supabase 之前使用的微服务方案：
-
-```text
-Next.js app -> Dockerized PHP microservice -> residents JSON
-```
-
-Run it with Docker:
-
-使用 Docker 运行：
+Run with Docker:
 
 ```bash
 cd legacy/php-residents-service
@@ -126,83 +202,21 @@ docker run --rm -p 8080:80 strata-residents-php
 
 Open:
 
-打开：
-
 ```text
 http://localhost:8080/Residents.php
 ```
 
-## Admin Access / 管理员权限
+This service returns residents data as JSON and demonstrates how the project originally used a separate containerized microservice before migrating to Supabase.
 
-1. Register or sign in at `/login`.  
-   在 `/login` 注册或登录。
-2. Copy your Supabase Auth user id from `Authentication -> Users`.  
-   在 Supabase 的 `Authentication -> Users` 中复制你的用户 ID。
-3. Add yourself to the admin allowlist:  
-   将自己加入管理员白名单：
+## Deployment
 
-```sql
-insert into public.admin_users (user_id)
-values ('YOUR_AUTH_USER_ID');
-```
-
-4. Open `/admin`.  
-   打开 `/admin`。
-
-## Main Routes / 主要页面
-
-- `/` - Home / 首页
-- `/aboutus` - About the portal / 项目介绍
-- `/buildinginfo` - Building and manager details / 楼宇和物业经理信息
-- `/insuranceinfo` - Insurance register / 保险信息
-- `/maintenanceinfo` - Maintenance provider details / 维修服务信息
-- `/residents` - Protected resident records / 受保护的住户资料
-- `/contact` - Maintenance request form / 维修请求表单
-- `/login` - Supabase Auth / 登录注册
-- `/admin` - Protected management dashboard / 受保护的管理后台
-
-## Screenshots / 项目截图
-
-Screenshots can be stored in:
-
-项目截图可以放在：
+The project is deployed on Vercel:
 
 ```text
-docs/screenshots/
+https://strata-management-final-lime.vercel.app
 ```
 
-Recommended screenshots:
-
-建议补充这些截图：
-
-- `home.png` - Home page / 首页
-- `login.png` - Supabase Auth page / 登录注册页
-- `admin-dashboard.png` - Protected CRUD dashboard / 后台管理面板
-- `contact-request.png` - Contact request form / 维修请求表单
-- `contact-requests-table.png` - Stored contact requests / 联系请求记录
-
-Example:
-
-示例：
-
-```md
-![Admin Dashboard](docs/screenshots/admin-dashboard.png)
-```
-
-## Scripts / 命令
-
-```bash
-npm run dev
-npm run build
-npm run start
-npm run lint
-```
-
-## Deployment / 部署
-
-Deploy on Vercel and add the same environment variables:
-
-部署到 Vercel，并添加相同的环境变量：
+Required Vercel environment variables:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL
@@ -210,16 +224,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY
 Website_Name
 ```
 
-The project includes `vercel.json` with a scheduled reminder endpoint at `/api/Alarm_Clock`.
+## Resume Summary
 
-项目包含 `vercel.json`，其中配置了 `/api/Alarm_Clock` 定时提醒接口。
+Built and deployed a full-stack strata management portal using Next.js, Supabase Auth, Row Level Security, and Vercel. The system includes protected admin routes, CRUD dashboards, resident records, insurance and maintenance management, public contact request storage, and a legacy Dockerized PHP microservice showing earlier microservice architecture and containerization experience.
 
-## Resume Summary / 简历描述
-
-Built a full-stack strata management portal using Next.js, Supabase Auth, Row Level Security, and Vercel, featuring protected admin routes, CRUD dashboards, resident records, insurance and maintenance management, and contact request storage.
-
-使用 Next.js、Supabase Auth、Row Level Security 和 Vercel 构建了一个全栈分层物业管理平台，实现了受保护的后台路由、CRUD 管理面板、住户资料管理、保险和维修信息管理，以及联系请求存储功能。
-
-Originally implemented a Dockerized PHP microservice for resident data delivery, then migrated the application to a Supabase-backed Next.js architecture.
-
-项目早期实现了一个 Dockerized PHP 微服务用于提供住户数据接口，后续迁移为基于 Supabase 的 Next.js 全栈架构。
+使用 Next.js、Supabase Auth、Row Level Security 和 Vercel 构建并部署了一个全栈分层物业管理平台，实现了受保护的后台路由、CRUD 管理面板、住户资料、保险和维修信息管理、公开联系请求存储，并保留 Dockerized PHP 微服务作为早期微服务架构和容器化经验展示。
