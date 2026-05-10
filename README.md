@@ -32,6 +32,7 @@ https://strata-management-final-lime.vercel.app
 - Supabase Auth and Database
 - Supabase Row Level Security
 - Vercel
+- Legacy PHP microservice with Docker
 - CSS utility layer in `app/globals.css`
 
 ## Getting Started / 本地运行
@@ -94,6 +95,42 @@ The schema creates the required tables:
 It also enables Row Level Security and creates policies for public reads, authenticated resident access, contact request submissions, and admin-only management.
 
 它还会开启 Row Level Security，并创建公开读取、登录用户访问、联系请求提交和管理员管理所需的安全策略。
+
+## Legacy PHP Microservice / 旧版 PHP 微服务
+
+This repository also keeps a legacy Dockerized PHP residents API in:
+
+本仓库保留了一个旧版 Dockerized PHP 住户数据 API：
+
+```text
+legacy/php-residents-service/
+```
+
+It demonstrates the earlier microservice approach used before the project migrated to Supabase:
+
+它展示了项目迁移到 Supabase 之前使用的微服务方案：
+
+```text
+Next.js app -> Dockerized PHP microservice -> residents JSON
+```
+
+Run it with Docker:
+
+使用 Docker 运行：
+
+```bash
+cd legacy/php-residents-service
+docker build -t strata-residents-php .
+docker run --rm -p 8080:8080 strata-residents-php
+```
+
+Open:
+
+打开：
+
+```text
+http://localhost:8080/Residents.php
+```
 
 ## Admin Access / 管理员权限
 
@@ -182,3 +219,7 @@ The project includes `vercel.json` with a scheduled reminder endpoint at `/api/A
 Built a full-stack strata management portal using Next.js, Supabase Auth, Row Level Security, and Vercel, featuring protected admin routes, CRUD dashboards, resident records, insurance and maintenance management, and contact request storage.
 
 使用 Next.js、Supabase Auth、Row Level Security 和 Vercel 构建了一个全栈分层物业管理平台，实现了受保护的后台路由、CRUD 管理面板、住户资料管理、保险和维修信息管理，以及联系请求存储功能。
+
+Originally implemented a Dockerized PHP microservice for resident data delivery, then migrated the application to a Supabase-backed Next.js architecture.
+
+项目早期实现了一个 Dockerized PHP 微服务用于提供住户数据接口，后续迁移为基于 Supabase 的 Next.js 全栈架构。
