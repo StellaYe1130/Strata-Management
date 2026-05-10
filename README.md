@@ -27,6 +27,8 @@ This project was built as a practical property-management system rather than a s
 - Protected resident records page
 - Admin allowlist controlled by Supabase Row Level Security
 - Admin CRUD dashboard for residents, insurance, maintenance, and contact requests
+- Search and status filtering in the admin dashboard
+- Contact request workflow: `new -> in_progress -> resolved`
 - Public maintenance request form stored in Supabase
 - Building, insurance, maintenance, and committee information pages
 - Vercel deployment with environment-based configuration
@@ -40,6 +42,8 @@ This project was built as a practical property-management system rather than a s
 - 受保护的住户资料页面
 - 基于 Supabase RLS 的管理员白名单
 - 后台 CRUD 管理住户、保险、维修和联系请求
+- 后台支持搜索、筛选和联系请求状态流转
+- 联系请求工作流：`new -> in_progress -> resolved`
 - 公开维修请求表单，并写入 Supabase 数据库
 - 楼宇、保险、维修和委员会信息页面
 - 使用 Vercel 部署
@@ -81,6 +85,32 @@ The PHP service is kept under `legacy/php-residents-service/` to demonstrate Doc
 
 当前线上版本使用 Supabase 作为主要数据层。PHP 服务保留在 `legacy/php-residents-service/` 中，用于展示项目早期的微服务方案和 Docker 容器化经验。
 
+## AI Native Development Workflow
+
+This project was developed with AI tools as part of the engineering workflow, not only for code generation. AI was used to:
+
+- Break down product requirements into implementable tasks
+- Debug local Next.js startup and environment issues
+- Compare architecture options between a PHP microservice and a Supabase-backed full-stack app
+- Draft and refine Supabase RLS policies
+- Review Dockerfile and deployment configuration
+- Improve bilingual documentation and resume-facing project descriptions
+
+The final implementation was manually verified through login, protected-route access, admin CRUD operations, contact request submission, Supabase RLS behavior, Vercel deployment, and PHP service JSON output.
+
+## AI Native 开发流程
+
+本项目在开发过程中将 AI 工具作为工程工作流的一部分，而不仅仅用于生成代码。AI 主要用于：
+
+- 将产品需求拆解为可实现的工程任务
+- 辅助定位 Next.js 本地启动和环境配置问题
+- 比较 PHP 微服务与 Supabase 全栈架构的取舍
+- 设计和修正 Supabase RLS 权限策略
+- 检查 Dockerfile 和部署配置
+- 优化双语 README 与简历项目描述
+
+最终功能通过登录、受保护路由、后台 CRUD、联系请求提交、Supabase RLS、Vercel 部署和 PHP JSON 服务输出进行了手动验证。
+
 ## Project Structure
 
 ```text
@@ -115,6 +145,34 @@ vercel.json                 Vercel deployment and cron config
 | `/contact` | Public maintenance request form |
 | `/login` | Supabase login and sign up |
 | `/admin` | Protected admin dashboard |
+
+## Business Workflow
+
+The contact request flow models a lightweight operations workflow similar to ticket or order handling:
+
+```text
+Resident submits request
+  -> Request stored in Supabase
+  -> Admin reviews request
+  -> Status changes from new to in_progress
+  -> Admin marks request as resolved
+```
+
+This mirrors common back-office patterns used in e-commerce and operations systems, where staff need to search, filter, update, and resolve user-submitted records.
+
+## 业务流程
+
+联系请求功能模拟了一个轻量级运营后台流程，类似电商系统中的售后工单或订单处理：
+
+```text
+住户提交请求
+  -> 请求写入 Supabase
+  -> 管理员查看请求
+  -> 状态从 new 更新为 in_progress
+  -> 管理员处理完成后标记为 resolved
+```
+
+该流程体现了后台系统中常见的搜索、筛选、状态更新和记录处理能力。
 
 ## Local Setup
 
