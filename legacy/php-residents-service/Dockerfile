@@ -1,9 +1,5 @@
-FROM php:8.3-cli
+FROM php:8.3-apache
 
-WORKDIR /app
+COPY Residents.php /var/www/html/Residents.php
 
-COPY Residents.php /app/Residents.php
-
-EXPOSE 8080
-
-CMD ["php", "-S", "0.0.0.0:8080", "Residents.php"]
+EXPOSE 80

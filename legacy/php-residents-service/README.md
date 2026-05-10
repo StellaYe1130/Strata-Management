@@ -47,7 +47,7 @@ Run the container:
 运行容器：
 
 ```bash
-docker run --rm -p 8080:8080 strata-residents-php
+docker run --rm -p 8080:80 strata-residents-php
 ```
 
 Open:

@@ -121,7 +121,7 @@ Run it with Docker:
 ```bash
 cd legacy/php-residents-service
 docker build -t strata-residents-php .
-docker run --rm -p 8080:8080 strata-residents-php
+docker run --rm -p 8080:80 strata-residents-php
 ```
 
 Open:
